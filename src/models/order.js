@@ -27,10 +27,6 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  orderType: {
-    type: Number,
-    required: true,
-  },
   startTime: {
     type: String,
     required: true,
