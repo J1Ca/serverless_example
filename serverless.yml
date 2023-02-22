@@ -1,0 +1,50 @@
+service: marketplace-server
+frameworkVersion: "3"
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-offline
+
+custom:
+  serverless-offline:
+    httpPort: 4000
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  memorySize: 128
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  httpApi:
+    # TODO: config cors
+    cors:
+      allowedOrigins:
+        - "*"
+      allowedHeaders:
+        - "*"
+      allowedMethods:
+        - "*"
+
+functions:
+  # OFFER
+  createOffer:
+    handler: src/handlers/offer/createOffer.handler
+    events:
+      - httpApi:
+          path: /offer/create
+          method: POST
+
+  deleteOffer:
+    handler: src/handlers/offer/deleteOffer.handler
+    events:
+      - httpApi:
+          path: /offer/{id}
+          method: DELETE
+
+  # ORDER
+  getOrdersByPrice:
+    handler: src/handlers/order/lookupByPrice.handler
+    events:
+      - httpApi:
+          path: /order/lookupByPrice
+          method: GET
